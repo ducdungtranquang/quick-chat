@@ -41,7 +41,23 @@ module.exports.register = async (req, res, next) => {
 
 module.exports.getAllUsers = async (req, res, next) => {
   try {
+    const userRole = await User.findOne({ _id }).select(["role"]);
+    if (!role) return res.json({ msg: "Failed", status: false });
     const users = await User.find({ _id: { $ne: req.params.id } }).select([
+      "email",
+      "username",
+      "avatarImage",
+      "_id",
+    ]);
+    return res.json(users);
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+module.exports.getAdminUser = async (req, res, next) => {
+  try {
+    const users = await User.findOne({ role: 1 }).select([
       "email",
       "username",
       "avatarImage",
