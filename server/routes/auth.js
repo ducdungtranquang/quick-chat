@@ -4,6 +4,7 @@ const {
   getAllUsers,
   setAvatar,
   logOut,
+  getAdminUser,
 } = require("../controllers/userController");
 
 const router = require("express").Router();
@@ -11,7 +12,7 @@ const router = require("express").Router();
 router.post("/login", login);
 router.post("/register", register);
 router.get("/allusers/:id", getAllUsers);
-router.get("/adminuser", getAllUsers);
+router.get("/adminuser", getAdminUser);
 router.post("/setavatar/:id", setAvatar);
 router.get("/logout/:id", logOut);
 

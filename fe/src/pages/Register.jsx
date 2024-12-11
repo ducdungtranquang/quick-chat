@@ -6,6 +6,7 @@ import Logo from "../assets/logo.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { registerRoute } from "../utils/APIRoutes";
+import { REACT_APP_LOCALHOST_KEY } from "../utils/constant";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ export default function Register() {
   });
 
   useEffect(() => {
-    if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+    if (localStorage.getItem(REACT_APP_LOCALHOST_KEY)) {
       navigate("/");
     }
   }, []);
@@ -76,7 +77,7 @@ export default function Register() {
       }
       if (data.status === true) {
         localStorage.setItem(
-          process.env.REACT_APP_LOCALHOST_KEY,
+          REACT_APP_LOCALHOST_KEY,
           JSON.stringify(data.user)
         );
         navigate("/");

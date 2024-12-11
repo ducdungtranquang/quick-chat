@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import Logout from "./Logout";
+import { REACT_APP_LOCALHOST_KEY } from "../utils/constant";
 
 export default function Contacts({ contacts, changeChat }) {
   const [currentUserName, setCurrentUserName] = useState(undefined);
   const [currentUserImage, setCurrentUserImage] = useState(undefined);
   const [currentSelected, setCurrentSelected] = useState(undefined);
-  const [isContactsVisible, setIsContactsVisible] = useState(false); 
+  const [isContactsVisible, setIsContactsVisible] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       const data = await JSON.parse(
-        localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+        localStorage.getItem(REACT_APP_LOCALHOST_KEY)
       );
       setCurrentUserName(data?.username);
       setCurrentUserImage(data?.avatarImage);
@@ -38,7 +40,7 @@ export default function Contacts({ contacts, changeChat }) {
             </div>
           </div>
           <div className={`contacts ${isContactsVisible ? "visible" : ""}`}>
-            {contacts.map((contact, index) => (
+            {contacts && contacts?.map((contact, index) => (
               <div
                 key={contact._id}
                 className={`contact ${
@@ -68,6 +70,7 @@ export default function Contacts({ contacts, changeChat }) {
             <div className="username">
               <h2>{currentUserName}</h2>
             </div>
+            <Logout />
           </div>
         </Container>
       )}
@@ -113,18 +116,19 @@ const Container = styled.div`
     overflow: auto;
     gap: 0.8rem;
     transition: transform 0.3s ease-in-out;
-    transform: translateX(-100%); /* Ẩn mặc định */
+    transform: translateX(-100%);
     position: fixed;
     top: 0;
     left: 0;
     height: 100%;
-    width: 80%; /* Chiều rộng của danh sách contacts */
+    width: 80%;
     background-color: #080420;
     z-index: 10;
-    padding-top: 5rem;
+    padding-top: 1rem;
 
     &.visible {
-      transform: translateX(0); /* Hiển thị khi có class visible */
+      transform: translateX(0); 
+      padding-top: 5rem
     }
 
     @media screen and (min-width: 720px) {
@@ -179,7 +183,7 @@ const Container = styled.div`
       }
     }
     @media screen and (max-width: 1080px) {
-      gap: 0.5rem;
+      gap: 2rem;
       .username {
         h2 {
           font-size: 1rem;
