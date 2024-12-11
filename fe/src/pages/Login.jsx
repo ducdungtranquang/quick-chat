@@ -6,6 +6,7 @@ import Logo from "../assets/logo.svg";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { loginRoute } from "../utils/APIRoutes";
+import { REACT_APP_LOCALHOST_KEY } from "../utils/constant";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -18,7 +19,7 @@ export default function Login() {
     theme: "dark",
   };
   useEffect(() => {
-    if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+    if (localStorage.getItem(REACT_APP_LOCALHOST_KEY)) {
       navigate("/");
     }
   }, []);
@@ -52,7 +53,7 @@ export default function Login() {
       }
       if (data.status === true) {
         localStorage.setItem(
-          process.env.REACT_APP_LOCALHOST_KEY,
+          REACT_APP_LOCALHOST_KEY,
           JSON.stringify(data.user)
         );
 
@@ -66,8 +67,7 @@ export default function Login() {
       <FormContainer>
         <form action="" onSubmit={(event) => handleSubmit(event)}>
           <div className="brand">
-            <img src={Logo} alt="logo" />
-            <h1>Quick Chaty</h1>
+            <h1>Quick Chat</h1>
           </div>
           <input
             type="text"

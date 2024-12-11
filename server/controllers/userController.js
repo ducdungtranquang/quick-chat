@@ -19,7 +19,7 @@ module.exports.login = async (req, res, next) => {
 
 module.exports.register = async (req, res, next) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, isAvatarImageSet, avatarImage } = req.body;
     const usernameCheck = await User.findOne({ username });
     if (usernameCheck)
       return res.json({ msg: "Username already used", status: false });
@@ -31,6 +31,8 @@ module.exports.register = async (req, res, next) => {
       email,
       username,
       password: hashedPassword,
+      isAvatarImageSet,
+      avatarImage
     });
     delete user.password;
     return res.json({ status: true, user });
@@ -41,6 +43,10 @@ module.exports.register = async (req, res, next) => {
 
 module.exports.getAllUsers = async (req, res, next) => {
   try {
+    const userRole = await User.findOne({ _id: { $ne: req.params.id } }).select(
+      ["role"]
+    );
+    if (!userRole) return res.json({ msg: "Failed", status: false });
     const users = await User.find({ _id: { $ne: req.params.id } }).select([
       "email",
       "username",
@@ -48,6 +54,20 @@ module.exports.getAllUsers = async (req, res, next) => {
       "_id",
     ]);
     return res.json(users);
+  } catch (ex) {
+    next(ex);
+  }
+};
+
+module.exports.getAdminUser = async (req, res, next) => {
+  try {
+    const users = await User.findOne({ role: 1 }).select([
+      "email",
+      "username",
+      "avatarImage",
+      "_id",
+    ]);
+    return res.json([users]);
   } catch (ex) {
     next(ex);
   }

@@ -5,6 +5,7 @@ import Logout from "./Logout";
 import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { sendMessageRoute, recieveMessageRoute } from "../utils/APIRoutes";
+import { REACT_APP_LOCALHOST_KEY } from "../utils/constant";
 
 export default function ChatContainer({ currentChat, socket }) {
   const [messages, setMessages] = useState([]);
@@ -13,7 +14,7 @@ export default function ChatContainer({ currentChat, socket }) {
 
   useEffect(async () => {
     const data = await JSON.parse(
-      localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+      localStorage.getItem(REACT_APP_LOCALHOST_KEY)
     );
     const response = await axios.post(recieveMessageRoute, {
       from: data._id,
@@ -26,7 +27,7 @@ export default function ChatContainer({ currentChat, socket }) {
     const getCurrentChat = async () => {
       if (currentChat) {
         await JSON.parse(
-          localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+          localStorage.getItem(REACT_APP_LOCALHOST_KEY)
         )._id;
       }
     };
@@ -35,7 +36,7 @@ export default function ChatContainer({ currentChat, socket }) {
 
   const handleSendMsg = async (msg) => {
     const data = await JSON.parse(
-      localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+      localStorage.getItem(REACT_APP_LOCALHOST_KEY)
     );
     socket.current.emit("send-msg", {
       to: currentChat._id,
@@ -83,7 +84,6 @@ export default function ChatContainer({ currentChat, socket }) {
             <h3>{currentChat.username}</h3>
           </div>
         </div>
-        <Logout />
       </div>
       <div className="chat-messages">
         {messages.map((message) => {
@@ -112,7 +112,8 @@ const Container = styled.div`
   grid-template-rows: 10% 80% 10%;
   gap: 0.1rem;
   overflow: hidden;
-  @media screen and (min-width: 720px) and (max-width: 1080px) {
+  height: 100%;
+  @media screen and (max-width: 1080px) {
     grid-template-rows: 15% 70% 15%;
   }
   .chat-header {

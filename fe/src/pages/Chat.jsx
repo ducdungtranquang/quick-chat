@@ -3,10 +3,11 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import styled from "styled-components";
-import { allUsersRoute, host } from "../utils/APIRoutes";
+import { adminuser, allUsersRoute, host } from "../utils/APIRoutes";
 import ChatContainer from "../components/ChatContainer";
 import Contacts from "../components/Contacts";
 import Welcome from "../components/Welcome";
+import { REACT_APP_LOCALHOST_KEY } from "../utils/constant";
 
 export default function Chat() {
   const navigate = useNavigate();
@@ -15,12 +16,12 @@ export default function Chat() {
   const [currentChat, setCurrentChat] = useState(undefined);
   const [currentUser, setCurrentUser] = useState(undefined);
   useEffect(async () => {
-    if (!localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
+    if (!localStorage.getItem(REACT_APP_LOCALHOST_KEY)) {
       navigate("/login");
     } else {
       setCurrentUser(
         await JSON.parse(
-          localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)
+          localStorage.getItem(REACT_APP_LOCALHOST_KEY)
         )
       );
     }
@@ -35,8 +36,13 @@ export default function Chat() {
   useEffect(async () => {
     if (currentUser) {
       if (currentUser.isAvatarImageSet) {
-        const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
-        setContacts(data.data);
+        if (!currentUser?.role) {
+          const data = await axios.get(adminuser);
+          setContacts(data.data);
+        } else {
+          const data = await axios.get(`${allUsersRoute}/${currentUser._id}`);
+          setContacts(data.data);
+        }
       } else {
         navigate("/setAvatar");
       }
@@ -78,6 +84,12 @@ const Container = styled.div`
     grid-template-columns: 25% 75%;
     @media screen and (min-width: 720px) and (max-width: 1080px) {
       grid-template-columns: 35% 65%;
+    }
+    @media screen and (max-width: 719px) {
+      width: 100vw;
+      height: 95vh;
+      display: flex;
+      flex-direction: column;
     }
   }
 `;
