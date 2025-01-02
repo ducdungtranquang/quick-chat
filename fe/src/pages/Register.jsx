@@ -69,7 +69,7 @@ export default function Register() {
       const { data } = await axios.post(registerRoute, {
         username,
         email,
-        password,
+        password
       });
 
       if (data.status === false) {

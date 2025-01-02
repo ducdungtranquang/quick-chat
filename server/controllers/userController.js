@@ -22,9 +22,7 @@ module.exports.register = async (req, res, next) => {
   try {
     const { username, email, password, isAvatarImageSet, avatarImage } =
       req.body;
-    const usernameCheck = await User.findOne({ username });
-    if (usernameCheck)
-      return res.json({ msg: "Username already used", status: false });
+    console.log(req.body);
     const emailCheck = await User.findOne({ email });
     if (emailCheck)
       return res.json({ msg: "Email already used", status: false });
