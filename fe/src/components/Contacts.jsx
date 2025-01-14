@@ -40,25 +40,26 @@ export default function Contacts({ contacts, changeChat }) {
             </div>
           </div>
           <div className={`contacts ${isContactsVisible ? "visible" : ""}`}>
-            {contacts && contacts?.map((contact, index) => (
-              <div
-                key={contact._id}
-                className={`contact ${
-                  index === currentSelected ? "selected" : ""
-                }`}
-                onClick={() => changeCurrentChat(index, contact)}
-              >
-                <div className="avatar">
-                  <img
-                    src={`data:image/svg+xml;base64,${contact.avatarImage}`}
-                    alt=""
-                  />
+            {contacts &&
+              contacts?.map((contact, index) => (
+                <div
+                  key={contact._id}
+                  className={`contact ${
+                    index === currentSelected ? "selected" : ""
+                  }`}
+                  onClick={() => changeCurrentChat(index, contact)}
+                >
+                  <div className="avatar">
+                    <img
+                      src={`data:image/svg+xml;base64,${contact.avatarImage}`}
+                      alt=""
+                    />
+                  </div>
+                  <div className="username">
+                    <h3>{contact.username}</h3>
+                  </div>
                 </div>
-                <div className="username">
-                  <h3>{contact.username}</h3>
-                </div>
-              </div>
-            ))}
+              ))}
           </div>
           <div className="current-user">
             <div className="avatar">
@@ -127,8 +128,8 @@ const Container = styled.div`
     padding-top: 1rem;
 
     &.visible {
-      transform: translateX(0); 
-      padding-top: 5rem
+      transform: translateX(0);
+      padding-top: 5rem;
     }
 
     @media screen and (min-width: 720px) {
@@ -147,6 +148,7 @@ const Container = styled.div`
       display: flex;
       gap: 1rem;
       align-items: center;
+      overflow: hidden;
       transition: 0.5s ease-in-out;
       .avatar {
         img {
@@ -156,6 +158,7 @@ const Container = styled.div`
       .username {
         h3 {
           color: white;
+          overflow: hidden;
         }
       }
     }
