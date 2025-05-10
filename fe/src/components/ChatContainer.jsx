@@ -26,9 +26,7 @@ export default function ChatContainer({ currentChat, socket }) {
   useEffect(() => {
     const getCurrentChat = async () => {
       if (currentChat) {
-        await JSON.parse(
-          localStorage.getItem(REACT_APP_LOCALHOST_KEY)
-        )._id;
+        await JSON.parse(localStorage.getItem(REACT_APP_LOCALHOST_KEY))._id;
       }
     };
     getCurrentChat();
@@ -81,7 +79,7 @@ export default function ChatContainer({ currentChat, socket }) {
             />
           </div>
           <div className="username">
-            <h3>{currentChat.username}</h3>
+            <h3 style={{ overflow: "hidden" }}>{currentChat.username}</h3>
           </div>
         </div>
       </div>
@@ -125,6 +123,7 @@ const Container = styled.div`
       display: flex;
       align-items: center;
       gap: 1rem;
+      padding-top: 20px;
       .avatar {
         img {
           height: 3rem;
@@ -132,6 +131,7 @@ const Container = styled.div`
       }
       .username {
         h3 {
+          overflow: hidden;
           color: white;
         }
       }
